@@ -1,12 +1,17 @@
 
-import {Fail} from './Message'
+import { JsonFail } from './Message'
 
 export default {
   async fetch(req: Request, env: any) {
     // 解析请求体
-    const body = await req.json().catch(() => null);
+    let body
+    try {
+      body = req.json()
+    } catch (error) {
+      return JsonFail(400, 'Invalid JSON format')
+    }
+    if (!body) return JsonFail(201, 'Parameters are missing')
     
-    return Fail(201,'路径错误')
-    
+    return JsonFail(200,'Request processed successfully');
   }
 };
