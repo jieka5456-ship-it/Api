@@ -5,5 +5,5 @@ export async function handleTeam(req: Request, env: any) {
   const Body = await req.json();
 
 
-  return JsonFail(200,"800");
+  return JsonFail(200,Body.Type);
 }
