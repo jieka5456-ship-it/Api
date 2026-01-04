@@ -9,8 +9,8 @@ const DB_MAP = {
 
 type ProjectKey = keyof typeof DB_MAP;
 
-export function getDB(env: Env, project: ProjectKey): D1Database {
-  const envKey = DB_MAP[project];
+export function getDB(env: Env, project: string): D1Database {
+  const envKey = DB_MAP[project as ProjectKey];
   if (!envKey) {
     throw { Code: 400, Message: `未知的业务标识: ${project}` };
   }
