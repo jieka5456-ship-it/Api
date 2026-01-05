@@ -1,3 +1,9 @@
 name = "api"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "business"
+database_name = "business"
+database_id = "558fcfdc-fdab-4e2a-9ab8-025693368f1b"
+
