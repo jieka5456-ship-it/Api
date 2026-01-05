@@ -45,5 +45,14 @@ export async function insertOne(
   const db = getDB(env, project);
   const sql = `INSERT INTO "${conf.table}" (${cols}) VALUES (${placeholders})`;
 
-  return db.prepare(sql).bind(...values).run();
+  try {
+    return db.prepare(sql).bind(...values).run();
+  } catch (err: any) {
+    const msg = String(err?.message || "");
+    if (msg.includes("UNIQUE")) {
+      throw { Code: 400, Message: "卡密已存在，不能重复添加" };
+    }
+    throw err;
+  }
+  
 }
