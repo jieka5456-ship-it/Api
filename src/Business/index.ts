@@ -33,6 +33,7 @@ export async function AdminHome(req: Request, env: Env,parts:string[]) {
       if (!body || typeof body !== 'object') return JsonFail(400, "请求体必须是 JSON 对象");
       //使用通用添加功能
       const res = await insertOne(env, project, schemaKey, body);
+      return JsonOk({success: true,insertId: res.meta?.last_row_id ?? null,changes: res.meta?.changes ?? 0 }, 0);
     }
     return JsonFail(404, "不支持的操作", 404);
   } catch (err:any) {
