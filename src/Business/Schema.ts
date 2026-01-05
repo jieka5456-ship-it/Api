@@ -17,8 +17,8 @@ export const SCHEMA_A = {
   },
 
   // ---- Team卡密管理 ----
-  PlucCode: {
-    table: "PlucCode",
+  Code: {
+    table: "TeamCode",
     primaryKey: "ID",
     // 新增允许写入的字段（不含 ID）
     insertable: ["Card","NumTime","UseState","UseTime",] as const,
