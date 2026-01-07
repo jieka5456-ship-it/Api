@@ -75,6 +75,7 @@ export async function bulkCard(env: Env, parts: string[], data: unknown): Promis
   const sql = `INSERT OR IGNORE INTO "${conf.table}" (${colsSql}) VALUES (${placeholders})`;
 
   let inserted = 0;
+  const cards: string[] = [];
 
   // 防止死循环：最多尝试 N 次（默认是目标数量的 20 倍，且至少 200）
   const maxAttempts = Math.max(200, CardInt * 20);
@@ -88,27 +89,17 @@ export async function bulkCard(env: Env, parts: string[], data: unknown): Promis
 
     const res = await db.prepare(sql).bind(...values).run();
     // OR IGNORE：如果重复/冲突 changes=0，不算插入成功，继续生成下一条
-    if ((res.meta?.changes ?? 0) > 0) inserted++;
+    if ((res.meta?.changes ?? 0) > 0) {
+        inserted++;
+        cards.push(card); // ← 只记录成功插入的
+}
   }
-
-  if (inserted < CardInt) {
-    return JsonFail(
-      500,
-      `生成未达到目标：目标 ${CardInt}，成功 ${inserted}。请检查：1) required 字段是否缺省 2) 表是否有强约束导致一直 IGNORE 3) 卡密碰撞过多`,
-      500
-    );
-  }
-
   // 你说只要成功数量，那就只返回成功数量
   return JsonOk(
     {
-      成功: true,
-      项目: project,
-      资源: schemaKey,
-      表名: conf.table,
-      生成数量: CardInt,
-      插入成功数量: inserted,
+      CardNum: inserted,
+      CardTxt:cards
     },
-    0
+    200
   );
 }
