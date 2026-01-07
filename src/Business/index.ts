@@ -27,6 +27,6 @@ export async function AdminHome(req: Request, env: Env, parts: string[]) {
   const body = await req.json().catch(() => null);
   if(action === 'Create' && req.method === 'POST') return await insertOne(env, parts, body);
   if(action === 'BulkCard' && req.method === 'POST') return await bulkCard(env, parts, body);
-  
+  return JsonFail(400,"服务器内部出错")
 }
 
