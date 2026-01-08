@@ -71,9 +71,9 @@ export async function bulkDelete(
   // 5️⃣ 返回
   return JsonOk(
     {
-      请求删除数量: ids.length,
-      实际删除数量: deleted
+      requested: ids.length,
+      deleted: deleted
     },
-    0
+    200
   );
 }
