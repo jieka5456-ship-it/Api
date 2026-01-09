@@ -61,7 +61,8 @@ export async function getList(env: Env, parts: string[], data: unknown): Promise
     const opRaw = String(w.Op ?? "=").toLowerCase();
     const value = w.Value;
 
-    if (!conf.filterable.includes(field)) return JsonFail(400, `不允许过滤字段: ${field}`, 400);
+    const filterable = (conf.filterable ?? conf.selectable); // filterable 优先，没有就 fallback 到 selectable
+    if (!filterable.includes(field)) return JsonFail(400, `不允许过滤字段: ${field}`, 400);
 
     const sqlOp = OP_MAP[opRaw];
     if (!sqlOp) return JsonFail(400, `不支持操作符: ${w.Op}`, 400);
@@ -82,7 +83,8 @@ export async function getList(env: Env, parts: string[], data: unknown): Promise
   const orderBy = String(body.OrderBy ?? pk);
   const orderDir = String(body.Order ?? "desc").toLowerCase() === "asc" ? "ASC" : "DESC";
 
-  if (!conf.orderable.includes(orderBy)) return JsonFail(400, `不允许排序字段: ${orderBy}`, 400);
+  const orderable = (conf.orderable ?? [conf.primaryKey ?? "ID"]);
+  if (!orderable.includes(orderBy)) return JsonFail(400, `不允许排序字段: ${orderBy}`, 400);
 
   // ---------- SELECT ----------
   const colsSql = conf.selectable.map((c) => `"${c}"`).join(", ");
