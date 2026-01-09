@@ -4,6 +4,7 @@ import { JsonFail, JsonOk } from '../Message'
 import { insertOne } from '../DB' // 路径按你项目实际调整
 import { bulkCard } from '../DB/bulkCard';
 import { bulkDelete } from '../DB/bulkDelete';
+import { getList } from '../DB/getList';
 
 
 export async function TeamHome(req: Request, env: Env, project: string[]) {
@@ -28,6 +29,7 @@ export async function AdminHome(req: Request, env: Env, parts: string[]) {
   if(action === 'Create' && req.method === 'POST') return await insertOne(env, parts, body);
   if(action === 'BulkCard' && req.method === 'POST') return await bulkCard(env, parts, body);
   if(action === 'BulkDelete' && req.method === 'POST') return await bulkDelete(env, parts, body);
+  if(action === 'GetList' && req.method === 'POST') return await getList(env, parts, body);
   return JsonFail(400,"服务器内部出错")
 }
 
