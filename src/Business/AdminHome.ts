@@ -1,7 +1,7 @@
 //后端业务处理逻辑
 import { JsonFail } from '../Message'
 import { insertOne } from "../DB";
-import { BusinessSchema } from "./Schema";
+import { SchemaKeyA } from "./Schema";
 
 
 //添加一条数据测试

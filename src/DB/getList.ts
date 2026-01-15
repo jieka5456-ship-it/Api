@@ -30,22 +30,22 @@ export async function getList(env: Env, parts: string[], data: unknown): Promise
   const project = parts[0];
   const schemaKey = parts[3];
 
-  if (!project) return JsonFail(400, "缺少项目标识", 400);
-  if (!schemaKey) return JsonFail(400, "缺少资源名（schemaKey）", 400);
+  if (!project) return JsonFail(400, "缺少项目标识");
+  if (!schemaKey) return JsonFail(400, "缺少资源名（schemaKey）");
 
   const body = isRecord(data) ? data : {};
 
   const schemaGroup = (SCHEMA_MAP as any)[project] as Record<string, Conf> | undefined;
-  if (!schemaGroup) return JsonFail(400, `未知项目: ${project}`, 400);
+  if (!schemaGroup) return JsonFail(400, `未知项目: ${project}`);
 
   const conf = schemaGroup[schemaKey];
-  if (!conf) return JsonFail(400, `未知资源: ${project}.${schemaKey}`, 400);
+  if (!conf) return JsonFail(400, `未知资源: ${project}.${schemaKey}`);
 
   let db: D1Database;
   try {
     db = getDB(env, project);
   } catch (e: any) {
-    return JsonFail(e?.Code ?? 500, e?.Message ?? "数据库未配置", e?.Code ?? 500);
+    return JsonFail(e?.Code ?? 500, e?.Message ?? "数据库未配置");
   }
 
   // ---------- WHERE ----------
@@ -55,17 +55,17 @@ export async function getList(env: Env, parts: string[], data: unknown): Promise
   const Where = Array.isArray(body.Where) ? (body.Where as WhereItem[]) : [];
 
   for (const w of Where) {
-    if (!w || typeof w.Field !== "string") return JsonFail(400, "Where 条件格式错误", 400);
+    if (!w || typeof w.Field !== "string") return JsonFail(400, "Where 条件格式错误");
 
     const field = w.Field;
     const opRaw = String(w.Op ?? "=").toLowerCase();
     const value = w.Value;
 
     const filterable = (conf.filterable ?? conf.selectable); // filterable 优先，没有就 fallback 到 selectable
-    if (!filterable.includes(field)) return JsonFail(400, `不允许过滤字段: ${field}`, 400);
+    if (!filterable.includes(field)) return JsonFail(400, `不允许过滤字段: ${field}`);
 
     const sqlOp = OP_MAP[opRaw];
-    if (!sqlOp) return JsonFail(400, `不支持操作符: ${w.Op}`, 400);
+    if (!sqlOp) return JsonFail(400, `不支持操作符: ${w.Op}`);
 
     if (sqlOp === "LIKE") {
       whereParts.push(`"${field}" LIKE ?`);
@@ -84,7 +84,7 @@ export async function getList(env: Env, parts: string[], data: unknown): Promise
   const orderDir = String(body.Order ?? "desc").toLowerCase() === "asc" ? "ASC" : "DESC";
 
   const orderable = (conf.orderable ?? [conf.primaryKey ?? "ID"]);
-  if (!orderable.includes(orderBy)) return JsonFail(400, `不允许排序字段: ${orderBy}`, 400);
+  if (!orderable.includes(orderBy)) return JsonFail(400, `不允许排序字段: ${orderBy}`);
 
   // ---------- SELECT ----------
   const colsSql = conf.selectable.map((c) => `"${c}"`).join(", ");
@@ -119,8 +119,8 @@ export async function getList(env: Env, parts: string[], data: unknown): Promise
   const page = Number(body.Page ?? 1);
   const pageSize = Number(body.PageSize ?? 20);
 
-  if (!Number.isInteger(page) || page <= 0) return JsonFail(400, "Page 必须是正整数", 400);
-  if (!Number.isInteger(pageSize) || pageSize <= 0 || pageSize > 200) return JsonFail(400, "PageSize 必须是 1~200", 400);
+  if (!Number.isInteger(page) || page <= 0) return JsonFail(400, "Page 必须是正整数");
+  if (!Number.isInteger(pageSize) || pageSize <= 0 || pageSize > 200) return JsonFail(400, "PageSize 必须是 1~200");
 
   const offset = (page - 1) * pageSize;
 
