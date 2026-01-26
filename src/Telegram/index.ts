@@ -7,7 +7,7 @@ export async function TgPost(Req:any,Env:any) {
     const chatId = update?.message?.chat?.id;
     const text = update?.message?.text ?? "";
     if(chatId){
-        await fetch(`https://api.telegram.org/bot${Env.BOT_TOKEN}/sendMessage`, {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
