@@ -22,7 +22,7 @@ export async function TgPost(Req: any, Env: any) {
         json = null;
     }
     if (!json) {
-        return return_TXT(chatId, "JSON格式错误")
+        return return_TXT(chatId, "请输入正确的JSON参数")
     }
     const Tmss = await Admin123(json)
     const Tmjson:any = await Tmss.json()
