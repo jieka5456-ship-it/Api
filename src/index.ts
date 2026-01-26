@@ -1,6 +1,6 @@
 import { JsonFail, JsonOk } from "./Message";
 import { TeamHome, AdminHome } from "./Business";
-import {} from ''
+import { TgPost } from "./Telegram";
 
 const ALLOW_ORIGINS = ["http://localhost:5888"]; // 你的前端域名
 
@@ -47,7 +47,7 @@ export default {
       else if (module === "Home") res = await TeamHome(req, env, parts);
       else res = JsonFail(404, "未知模块");
     } else if (project === "tg") {
-      res = JsonOk({ Home: "项目b接口" }, 200);
+      return TgPost()
     } else {
       res = JsonFail(404, "未知接口信息");
     }
