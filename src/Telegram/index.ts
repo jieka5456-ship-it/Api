@@ -29,7 +29,7 @@ export async function TgPost(Req: any, Env: any) {
     if (Tmjson.code == 200) {
         return return_TXT(chatId, "处理成功")
     }else{
-        return return_TXT(chatId, `"处理失败:${Tmjson.data.data.detail}`)
+        return return_TXT(chatId, `"处理失败:${JSON.stringify(Tmjson)}`)
     }
 
 }
