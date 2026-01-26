@@ -1,6 +1,6 @@
 
 import { JsonOk } from "../Message";
-const BOT_TOKEN = "8257891631:AAGbEYI-1936YzuhpvUpcM8KsbxsJcVeit79Ymo"
+const BOT_TOKEN = "8257891631:AAGbEYI-YzuhpvUpcM8KsbxsJcVeit79Ymo"
 export async function TgPost(Req: any, Env: any) {
     const update: any = await Req.json().catch(() => null);
     console.log("TG_UPDATE:", JSON.stringify(update));
