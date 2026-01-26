@@ -47,7 +47,7 @@ export default {
       else if (module === "Home") res = await TeamHome(req, env, parts);
       else res = JsonFail(404, "未知模块");
     } else if (project === "tg") {
-      return TgPost()
+      return TgPost(req,env)
     } else {
       res = JsonFail(404, "未知接口信息");
     }
