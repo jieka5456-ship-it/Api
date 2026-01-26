@@ -26,10 +26,15 @@ export async function TeamHome(req: Request, env: Env, project: string[]) {
 export async function AdminHome(req: Request, env: Env, parts: string[]) {
   const action = parts[2];  // Create
   const body = await req.json().catch(() => null);
+  //通用添加
   if(action === 'Create' && req.method === 'POST') return await insertOne(env, parts, body);
+  //通用批量添加卡密
   if(action === 'BulkCard' && req.method === 'POST') return await bulkCard(env, parts, body);
+  //通用删除
   if(action === 'BulkDelete' && req.method === 'POST') return await bulkDelete(env, parts, body);
+  //通用查询
   if(action === 'GetList' && req.method === 'POST') return await getList(env, parts, body);
+  //通用修改
   if(action === 'Update' && req.method === 'POST') return await updateOne(env, parts, body);
   return JsonFail(400,"服务器内部出错")
 }

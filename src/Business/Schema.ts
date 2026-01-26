@@ -2,7 +2,7 @@
 
 export const SCHEMA_A = {
   // ---- Team订单管理 ----
-  TeamOrder: {
+  Order: {
     table: "TeamOrder",
     primaryKey: "ID",
     // 新增允许写入的字段（不含 ID）

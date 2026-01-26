@@ -1,5 +1,6 @@
 import { JsonFail, JsonOk } from "./Message";
 import { TeamHome, AdminHome } from "./Business";
+import {} from ''
 
 const ALLOW_ORIGINS = ["http://localhost:5888"]; // 你的前端域名
 
@@ -45,7 +46,7 @@ export default {
       if (module === "Admin") res = await AdminHome(req, env, parts);
       else if (module === "Home") res = await TeamHome(req, env, parts);
       else res = JsonFail(404, "未知模块");
-    } else if (project === "b") {
+    } else if (project === "tg") {
       res = JsonOk({ Home: "项目b接口" }, 200);
     } else {
       res = JsonFail(404, "未知接口信息");
