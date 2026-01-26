@@ -27,9 +27,9 @@ export async function TgPost(Req: any, Env: any) {
     const Tmss = await Admin123(json)
     const Tmjson:any = await Tmss.json()
     if (Tmjson.code == 200) {
-        return return_TXT(chatId, "处理成功")
+        return return_TXT(chatId, `处理成功|${json.user.email}`)
     }else{
-        return return_TXT(chatId, `"处理失败:${JSON.stringify(Tmjson)}`)
+        return return_TXT(chatId, `处理失败|${JSON.stringify(Tmjson)}`)
     }
 
 }
