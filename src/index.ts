@@ -2,7 +2,7 @@ import { JsonFail, JsonOk } from "./Message";
 import { TeamHome, AdminHome } from "./Business";
 import { TgPost } from "./Telegram";
 
-const ALLOW_ORIGINS = ["http://localhost:5888"]; // 你的前端域名
+const ALLOW_ORIGINS = ["http://localhost:5777"]; // 你的前端域名
 
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get("Origin") || "";
