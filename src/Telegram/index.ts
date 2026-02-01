@@ -30,9 +30,9 @@ export async function TgPost(Req: any, Env: any) {
     if(json.account.planType === "plus"){
         return return_TXT(chatId, "下单失败: 已开通Plus")
     }else if(json.account.planType === "free"){
-        Tmss = await Admin123(json)
-    }else if(json.account.planType === "team"){
         Tmss = await TeamPay(json)
+    }else if(json.account.planType === "team"){
+        Tmss = await Admin123(json)
     }else{
         return return_TXT(chatId, "下单失败: 参数异常")
     }
