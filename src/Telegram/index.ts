@@ -1,6 +1,6 @@
 
 import { JsonOk } from "../Message";
-const BOT_TOKEN = "8257891631:AAGbEYI-YzuhpvUpcM8KsbxsJcVeit79Ymo"
+const BOT_TOKEN = "8585538929:AAE4PJx19Lp9YlyJAJzb1fpsj_b7-bhsAfE"
 export async function TgPost(Req: any, Env: any) {
     const update: any = await Req.json().catch(() => null);
     const chatId = update?.message?.chat?.id;
