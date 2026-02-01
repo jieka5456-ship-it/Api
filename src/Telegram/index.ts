@@ -3,15 +3,12 @@ import { JsonOk } from "../Message";
 const BOT_TOKEN = "8257891631:AAGbEYI-YzuhpvUpcM8KsbxsJcVeit79Ymo"
 export async function TgPost(Req: any, Env: any) {
     const update: any = await Req.json().catch(() => null);
-    console.log("TG_UPDATE:", JSON.stringify(update));
-
     const chatId = update?.message?.chat?.id;
     const text = update?.message?.text ?? "";
 
     //先判断用户ID是否存在
     if (!chatId) {
-        console.log("No chatId. Maybe callback_query or other update type.");
-        return JsonOk({ ok: true, reason: "no chatId" }, 200);
+        return JsonOk({ ok: true, reason: "用户ID不存在" }, 200);
     }
 
     // 判断文本是否存在
@@ -22,12 +19,32 @@ export async function TgPost(Req: any, Env: any) {
         json = null;
     }
     if (!json) {
-        return return_TXT(chatId, "请输入正确的JSON参数")
+        if(text==="/start"){
+            return return_TXT(chatId, "👋 欢迎使用Team自助机器人！")
+        }else{
+            return return_TXT(chatId, "请输入完整的JSON参数")
+        }
     }
-    const Tmss = await Admin123(json)
-    const Tmjson:any = await Tmss.json()
+    let Tmss: any = null
+    let Tmjson:any = null
+    if(json.account.planType === "plus"){
+        return return_TXT(chatId, "下单失败: 已开通Plus")
+    }else if(json.account.planType === "free"){
+        Tmss = await Admin123(json)
+    }else if(json.account.planType === "team"){
+        Tmss = await TeamPay(json)
+    }else{
+        return return_TXT(chatId, "下单失败: 参数异常")
+    }
+
+    Tmjson = await Tmss.json()
     if (Tmjson.code == 200) {
-        return return_TXT(chatId, `处理成功|${json.user.email}`)
+        if(Tmjson.data.Payurl){
+            return return_TXT(chatId, `下单成功| ${Tmjson.data.Payurl}`)
+        }else{
+            return return_TXT(chatId, `处理成功| ${json.user.email}`)
+        }
+        
     }else{
         return return_TXT(chatId, `处理失败|${JSON.stringify(Tmjson)}`)
     }
@@ -49,6 +66,20 @@ async function return_TXT( id: any,Txt: string) {
 //调用API接口处理Team
 async function Admin123(params: any) {
     const apiUrl = "https://pyapi.my91.my/TeamAdmin123";
+    return await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            session: params, 
+        }),
+    });
+}
+
+//调用接口Team下单
+async function TeamPay(params: any) {
+    const apiUrl = "https://pyapi.my91.my/BusinessPayurl";
     return await fetch(apiUrl, {
         method: "POST",
         headers: {
