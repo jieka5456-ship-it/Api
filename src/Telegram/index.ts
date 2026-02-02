@@ -5,7 +5,7 @@ export async function TgPost(Req: any, Env: any) {
     const update: any = await Req.json().catch(() => null);
     const chatId = update?.message?.chat?.id;
     const text = update?.message?.text ?? "";
-
+    console.log("USER_TEXT:", text);
     //先判断用户ID是否存在
     if (!chatId) {
         return JsonOk({ ok: true, reason: "用户ID不存在" }, 200);
