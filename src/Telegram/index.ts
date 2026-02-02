@@ -27,11 +27,11 @@ export async function TgPost(Req: any, Env: any) {
     }
     let Tmss: any = null
     let Tmjson:any = null
-    if(json.account.planType === "plus"){
+    if(json?.account?.planType === "plus"){
         return return_TXT(chatId, "处理失败: 已开通Plus")
-    }else if(json.account.planType === "free"){
+    }else if(json?.account?.planType === "free"){
         Tmss = await TeamPay(json)
-    }else if(json.account.planType === "team"){
+    }else if(json?.account?.planType === "team"){
         Tmss = await Admin123(json)
     }else{
         return return_TXT(chatId, "下单失败: 参数异常")
