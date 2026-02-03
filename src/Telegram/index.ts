@@ -53,6 +53,7 @@ export async function TgPost(Req: any, Env: any) {
 async function return_TXT( id: any,Txt: string) {
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     const payload = { chat_id: id, text: Txt };
+    console.log("TG_SEND ->", JSON.stringify(payload));
     const resp = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
