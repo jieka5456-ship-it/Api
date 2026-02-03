@@ -60,6 +60,7 @@ async function return_TXT( id: any,Txt: string) {
         body: JSON.stringify(payload),
     });
     const data = await resp.json().catch(() => ({}));
+    console.log("TG_SEND_STATUS:", data);
     return JsonOk({ ok: true, tg: data }, 200);
 }
 
