@@ -24,7 +24,7 @@ export async function GrokSuperAdmin(req: Request, env: Env, parts: string[]){
 async function GrokSetSSO(env:Env, Body:any) {
     if(!Body || typeof Body !== "object") return JsonFail(400,"参数异常")
     if(!isValidJWT(Body.sso))  return JsonFail(400,"参数异常")
-    await env.TmSSO.put("1111", Body.sso);
+    await env.TmSSO.put(Body.Type, Body.Token);
     return JsonOk({"msg":"正常的哈"},200)
 }
 
