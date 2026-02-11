@@ -7,7 +7,7 @@ export async function GrokSuperHome(req: Request, env: Env, parts: string[]){
     const action = parts[2];  // Create
     const Body = await req.json().catch(() => null);
     if(action === 'HomeSso' && req.method === 'POST') return await GrokSetSSO(env, Body);
-    if(action === 'HomeSso' && req.method === 'POST') return await GrokGetSSO(env, Body);
+    if(action === 'HomeGet' && req.method === 'POST') return await GrokGetSSO(env, Body);
     return JsonOk({"msg":"没找到项目哈"},200)
 }
 
