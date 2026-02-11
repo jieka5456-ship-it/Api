@@ -2,24 +2,8 @@ import { JsonFail, JsonOk } from "./Message";
 import { TeamHome, AdminHome } from "./Business";
 import { GrokSuperAdmin,GrokSuperHome } from "./GrokSuper";
 import { TgPost } from "./Telegram";
+import { getCorsHeaders } from "./Cors";
 
-const ALLOW_ORIGINS = ["http://localhost:5777"]; // 你的前端域名
-
-function getCorsHeaders(req: Request) {
-  const origin = req.headers.get("Origin") || "";
-  const allowOrigin = ALLOW_ORIGINS.includes(origin) ? origin : "";
-
-  return {
-    ...(allowOrigin ? { "Access-Control-Allow-Origin": allowOrigin } : {}),
-    "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
-    "Access-Control-Allow-Headers":
-      req.headers.get("Access-Control-Request-Headers") ||
-      "Content-Type, Authorization",
-    "Access-Control-Allow-Credentials": "true",
-    "Access-Control-Max-Age": "86400",
-    "Vary": "Origin",
-  };
-}
 
 function withCors(req: Request, res: Response) {
   const headers = new Headers(res.headers);
