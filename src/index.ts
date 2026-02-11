@@ -1,5 +1,6 @@
 import { JsonFail, JsonOk } from "./Message";
 import { TeamHome, AdminHome } from "./Business";
+import { GrokSuperAdmin,GrokSuperHome } from "./GrokSuper";
 import { TgPost } from "./Telegram";
 
 const ALLOW_ORIGINS = ["http://localhost:5777"]; // 你的前端域名
@@ -45,6 +46,10 @@ export default {
     else if (project === "a") {
       if (module === "Admin") res = await AdminHome(req, env, parts);
       else if (module === "Home") res = await TeamHome(req, env, parts);
+      else res = JsonFail(404, "未知模块");
+    }else if (project === "b") {
+      if (module === "Admin") res = await GrokSuperAdmin(req, env, parts);
+      else if (module === "Home") res = await GrokSuperHome(req, env, parts);
       else res = JsonFail(404, "未知模块");
     } else if (project === "tg") {
       return TgPost(req,env)

@@ -7,3 +7,7 @@ binding = "business"
 database_name = "business"
 database_id = "558fcfdc-fdab-4e2a-9ab8-025693368f1b"
 
+[[kv_namespaces]]
+binding = "TmSSO"
+id = "49cd78786459443f9aacc03ce0fa5439"
+
