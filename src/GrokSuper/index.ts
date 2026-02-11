@@ -7,6 +7,7 @@ export async function GrokSuperHome(req: Request, env: Env, parts: string[]){
     const action = parts[2];  // Create
     const Body = await req.json().catch(() => null);
     if(action === 'HomeSso' && req.method === 'POST') return await GrokSetSSO(env, Body);
+    if(action === 'HomeSso' && req.method === 'POST') return await GrokGetSSO(env, Body);
     return JsonOk({"msg":"没找到项目哈"},200)
 }
 
@@ -27,7 +28,13 @@ async function GrokSetSSO(env:Env, Body:any) {
     await env.TmSSO.put(Body.Type, Body.Token);
     return JsonOk({"msg":"正常的哈"},200)
 }
-
+//前端----查询SOO
+async function GrokGetSSO(env:Env, Body:any) {
+    if(!Body || typeof Body !== "object") return JsonFail(400,"参数异常")
+    if(!Body.Type)  return JsonFail(400,"参数异常")
+    const Keysso =  await env.TmSSO.get(Body.Type);
+    return JsonOk({"Key":Keysso},200)
+}
 
 
 
