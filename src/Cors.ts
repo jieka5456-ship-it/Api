@@ -3,7 +3,7 @@ const ALLOW_ORIGINS = [
   "http://localhost:5888",
   "http://localhost:5173",
   "http://localhost:3000",
-  // "https://admin.xxx.com"
+  "https://teamgo.pages.dev"
 ];
 
 export function getCorsHeaders(req: Request) {
