@@ -8,6 +8,8 @@ export async function GrokSuperHome(req: Request, env: Env, parts: string[]){
     const Body = await req.json().catch(() => null);
     if(action === 'HomeSso' && req.method === 'POST') return await GrokSetSSO(env, Body);
     if(action === 'HomeGet' && req.method === 'POST') return await GrokGetSSO(env, Body);
+    if(action === 'SETUUID' && req.method === 'POST') return await GrokSETUUID(env, Body);
+    if(action === 'GETUUID' && req.method === 'POST') return await GrokGETUUID(env, Body);
     return JsonOk({"msg":"没找到项目哈"},200)
 }
 
@@ -36,6 +38,21 @@ async function GrokGetSSO(env:Env, Body:any) {
     return JsonOk({"Key":Keysso},200)
 }
 
+//前端----添加UUID
+async function GrokSETUUID(env:Env, Body:any) {
+    if(!Body || typeof Body !== "object") return JsonFail(400,"参数异常")
+    if(!Body.Type)  return JsonFail(400,"参数异常")
+    await env.TmSSO.put(Body.Type, Body.UUID);
+    return JsonOk({"msg":"UUID添加成功"},200)
+}
+
+//前端----查询UUID
+async function GrokGETUUID(env:Env, Body:any) {
+    if(!Body || typeof Body !== "object") return JsonFail(400,"参数异常")
+    if(!Body.Type)  return JsonFail(400,"参数异常")
+    const Keysso =  await env.TmSSO.get(Body.Type);
+    return JsonOk({"Key":Keysso},200)
+}
 
 
 //JWT参数验证
